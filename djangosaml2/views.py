@@ -317,7 +317,7 @@ def assertion_consumer_service(request,
     if 'URL-Center' not in ava:
         logger.error('URL-Institution not found ask for it from your idp')
         return HttpResponseBadRequest("There are issues from idp checkout the params")
-    if ava['URL-Center'] != '08070076':
+    if ava['URL-Center'][0] != u'08070076':
         logger.error('This type of user doest not have the permissions required')
         return HttpResponseBadRequest("Usuario not autorizado para realizar estas acciones")
     user = auth.authenticate(request=request,
