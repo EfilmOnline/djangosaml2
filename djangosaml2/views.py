@@ -333,9 +333,6 @@ def assertion_consumer_service(request,
     logger.debug("User %s authenticated via SSO.", user)
 
     logger.debug('Sending the post_authenticated signal')
-    logger.info("*****")
-    logger.info(session_info)
-    logger.info("*****")
     post_authenticated.send_robust(sender=user, session_info=session_info)
 
     # redirect the user to the view where he came from
