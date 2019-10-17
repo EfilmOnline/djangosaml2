@@ -323,12 +323,16 @@ def assertion_consumer_service(request,
     logger.debug("User %s authenticated via SSO.", user)
 
     logger.debug('Sending the post_authenticated signal')
+    logger.info("*****")
+    logger.info(session_info)
+    logger.info("*****")
     post_authenticated.send_robust(sender=user, session_info=session_info)
 
     # redirect the user to the view where he came from
     default_relay_state = get_custom_setting('ACS_DEFAULT_REDIRECT_URL',
                                              settings.LOGIN_REDIRECT_URL)
-    relay_state = request.POST.get('RelayState', default_relay_state)
+    # relay_state = request.POST.get('RelayState', default_relay_state)
+    relay_state = request.POST.get('', default_relay_state) #change RelayState by defaul to get default
     if not relay_state:
         logger.warning('The RelayState parameter exists but is empty')
         relay_state = default_relay_state
