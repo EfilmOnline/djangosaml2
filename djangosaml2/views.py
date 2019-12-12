@@ -310,7 +310,10 @@ def assertion_consumer_service(request,
         create_unknown_user = create_unknown_user()
 
     logger.debug('Trying to authenticate the user. Session info: %s', session_info)
-    check_site = session_info['issuer'].split('.')[0][8:]
+    if 'issuer' not in session_info:
+        logger.error('issuer is not found in data from idp')
+        return HttpResponseBadRequest("issuer is not found in data from idp")
+    check_site = session_info['issuer'].split('.')[0][8:]    
     if 'ava' not in session_info:
         logger.error('ava key not found in sesssion check problem from idp')
         return HttpResponseBadRequest("There are issues from idp checkout the params")
