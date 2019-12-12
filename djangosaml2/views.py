@@ -310,6 +310,7 @@ def assertion_consumer_service(request,
         create_unknown_user = create_unknown_user()
 
     logger.debug('Trying to authenticate the user. Session info: %s', session_info)
+    check_site = session_info['issuer'].split('.')[0][8:]
     if 'ava' not in session_info:
         logger.error('ava key not found in sesssion check problem from idp')
         return HttpResponseBadRequest("There are issues from idp checkout the params")
@@ -317,12 +318,13 @@ def assertion_consumer_service(request,
     logger.info('******')
     logger.info(session_info)
     logger.info('******')
-    if 'URL-Center' not in ava:
-        logger.error('URL-Institution not found ask for it from your idp')
-        return HttpResponseBadRequest("There are issues from idp checkout the params")
-    if ava['URL-Center'][0] != u'08070076':
-        logger.error('This type of user doest not have the permissions required')
-        return HttpResponseBadRequest("Usuario not autorizado para realizar estas acciones")
+    if 'identitat' in check_site:
+        if 'URL-Center' not in ava:
+            logger.error('URL-Institution not found ask for it from your idp')
+            return HttpResponseBadRequest("There are issues from idp checkout the params")
+        if ava['URL-Center'][0] != u'08070076':
+            logger.error('This type of user doest not have the permissions required')
+            return HttpResponseBadRequest("Usuario not autorizado para realizar estas acciones")
     user = auth.authenticate(request=request,
                              session_info=session_info,
                              attribute_mapping=attribute_mapping,
