@@ -314,6 +314,9 @@ def assertion_consumer_service(request,
         logger.error('ava key not found in sesssion check problem from idp')
         return HttpResponseBadRequest("There are issues from idp checkout the params")
     ava = session_info['ava']
+    logger.info('******')
+    logger.info(session_info)
+    logger.info('******')
     if 'URL-Center' not in ava:
         logger.error('URL-Institution not found ask for it from your idp')
         return HttpResponseBadRequest("There are issues from idp checkout the params")
